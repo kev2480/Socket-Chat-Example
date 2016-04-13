@@ -10,5 +10,9 @@ $('form').submit(function(){
 });
 
 socket.on('chat message', function(msg){
-  $('#messages').append($('<li>').text(msg));
+  //$('#messages').append($('<li>').text(msg));
+
+  $("#messages").append('<li><h2 class="messageUser" style="color:'+msg.color+'">'+msg.user+'</h2><span class="message">'+msg.message+'</span></li>');
+
+
 });

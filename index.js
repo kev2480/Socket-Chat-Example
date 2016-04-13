@@ -21,21 +21,27 @@ io.on('connection', function(socket){
   var username = hs.query.username;
   users[username] = socket.id; // connected user with its socket.id
   clients[socket.id] = socket; // add the client data to the hash
+  var userColour = getRandomColor();
 
   //connected
   console.log( username + ' connected.' );
-  io.emit('chat message', "SocketBot: " + username + " has joined the chat.");
+    var messageBundle = getMessageBundle("red", "SocketBot", username + " has joined the chat");
+  io.emit('chat message', messageBundle);
   //Disconnected
   socket.on( 'disconnect', function(){
     console.log( username + ' disconnected' );
-    io.emit('chat message', "SocketBot: " + username + " has left the chat.");
+
+    var messageBundle = getMessageBundle("red", "SocketBot", username + " has left the chat");
+    io.emit('chat message', messageBundle);
     delete clients[socket.id]; // remove the client from the array
     delete users[username]; // remove connected user & socket.id
   } );
 
   //New message
   socket.on('chat message', function(msg){
-    io.emit('chat message', username + ": " + msg); //Send message to everyone TODO: Don't send back to sender!
+
+
+    io.emit('chat message', getMessageBundle(userColour, username, msg)); //Send message to everyone TODO: Don't send back to sender!
   });
 
 });
@@ -43,3 +49,23 @@ io.on('connection', function(socket){
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function getMessageBundle(userColour, username, msg)
+{
+  var messageBundle = {
+    message: msg,
+    user: username,
+    color: userColour
+  }
+
+  return messageBundle;
+}
