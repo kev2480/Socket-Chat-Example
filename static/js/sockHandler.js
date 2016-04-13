@@ -1,4 +1,7 @@
-var socket = io();
+
+var person = prompt("Please enter your name...", "");
+
+var socket = io({ query: "username=" + person });
 
 $('form').submit(function(){
   socket.emit('chat message', $('#m').val());
