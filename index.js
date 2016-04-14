@@ -25,23 +25,21 @@ io.on('connection', function(socket){
 
   //connected
   console.log( username + ' connected.' );
-    var messageBundle = getMessageBundle("red", "SocketBot", username + " has joined the chat");
-  io.emit('chat message', messageBundle);
+
+  io.emit('chat message', getSocketBotBundle( username + " has joined the chat") );
   //Disconnected
   socket.on( 'disconnect', function(){
     console.log( username + ' disconnected' );
 
-    var messageBundle = getMessageBundle("red", "SocketBot", username + " has left the chat");
-    io.emit('chat message', messageBundle);
+    io.emit('chat message', getSocketBotBundle( username + " has left the chat") );
     delete clients[socket.id]; // remove the client from the array
     delete users[username]; // remove connected user & socket.id
   } );
 
   //New message
-  socket.on('chat message', function(msg){
-
-
-    io.emit('chat message', getMessageBundle(userColour, username, msg)); //Send message to everyone TODO: Don't send back to sender!
+  socket.on('chat message', function(message){
+    console.log( message.message + message.time );
+    io.emit('chat message', getMessageBundle(userColour, username, message.message, message.time)); //Send message to everyone TODO: Don't send back to sender!
   });
 
 });
@@ -59,13 +57,53 @@ function getRandomColor() {
     return color;
 }
 
-function getMessageBundle(userColour, username, msg)
+function getMessageBundle(userColour, username, msg, timestamp)
 {
   var messageBundle = {
     message: msg,
     user: username,
-    color: userColour
+    color: userColour,
+    time: timestamp
   }
 
   return messageBundle;
+}
+
+function getSocketBotBundle(message)
+{
+  var messageBundle = getMessageBundle(
+    "red",
+    "SocketBot",
+     message,
+    "Server Time: " + timeStamp(new Date()) );
+
+    return messageBundle;
+}
+
+/**
+ * Return a timestamp with the format "h:MM:ss TT"
+ * @type {Date}
+ */
+function timeStamp(now) {
+
+// Create an array with the current hour, minute and second
+  var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
+
+// Determine AM or PM suffix based on the hour
+  var suffix = ( time[0] < 12 ) ? "AM" : "PM";
+
+// Convert hour from military time
+  time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
+
+// If hour is 0, set it to 12 time[0] = time[0] || 12;
+
+// If seconds and minutes are less than 10, add a zero
+  for ( var i = 1; i < 3; i++ ) {
+    if ( time[i] < 10 ) {
+      time[i] = "0" + time[i];
+    }
+  }
+
+// Return the formatted string
+  return time.join(":") + " " + suffix;
 }
