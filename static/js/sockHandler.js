@@ -12,7 +12,8 @@ $('form').submit(function(){
 socket.on('chat message', function(msg){
   //$('#messages').append($('<li>').text(msg));
 
-  $("#messages").append('<li><h2 class="messageUser" style="color:'+msg.color+'">'+msg.user+'</h2><span class="message">'+msg.message+'</span></li>');
-
+  $("#messages").append('<li class="list-group-item"><strong class="messageUser" style="color:'+msg.color+'">'+msg.user+'</strong><span class="message">'+msg.message+'</span></li>');
+  $( "#messages li:last-child" ).addClass("pullDown");
+  window.scrollTo(0,document.body.scrollHeight);
 
 });
