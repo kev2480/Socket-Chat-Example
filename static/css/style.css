@@ -7,10 +7,11 @@ form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 
 
 
 .messageUser {float: left;}
-.time {float: right;}
+.time {float: right; color: rgba(0, 0, 0, 0.5);}
 .message {padding: 15px;}
 #messages { list-style-type: none; margin-bottom: 60px; margin-top: 20px;}
 /*#messages li { padding: 10px 10px; } */
 #messages li:nth-child(odd) { background: #eee; }
+#messages li {     padding-bottom: 20px; padding-top: 20px; }
 
 .text-input-area { margin-top: 8px; }
