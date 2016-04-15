@@ -22,6 +22,32 @@ socket.on('chat message', function(msg){
   window.scrollTo(0,document.body.scrollHeight);
 });
 
+/*On new user empty and re add*/
+socket.on('new user', function(usernames)
+{
+  $("#users").empty();
+  $("#users").append('<li class="list-group-item list-group-item-info">Online </li>');
+  for (var i = 0; i < usernames.length; i++) {
+    var user = usernames[i];
+    addUser(user);
+  }
+});
+
+/**
+  * Add user to online list
+  */
+function addUser(user)
+{
+  $("#users").append('<li class="list-group-item">'
+                          + '<strong style="color:'+user.color+'">'+user.user+'</strong>'
+                          + '</li>');
+
+  $( "#users li:last-child" ).addClass("pullDown");
+}
+
+/**
+  * Message to send back to server
+  */
 function getSendBundle(msg, now)
 {
   var messageBundle = {
