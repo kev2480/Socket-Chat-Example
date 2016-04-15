@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var clients = {};
 var users = {};
+var usernames = [];
 
 app.use('/static', express.static('static'));
 
@@ -22,16 +23,21 @@ io.on('connection', function(socket){
   users[username] = socket.id; // connected user with its socket.id
   clients[socket.id] = socket; // add the client data to the hash
   var userColour = getRandomColor();
+  var userBundle = getUserBundle(username, userColour);
+  usernames.push(userBundle);
 
   //connected
   console.log( username + ' connected.' );
 
   io.emit('chat message', getSocketBotBundle( username + " has joined the chat") );
+  io.emit('new user', usernames );
+
   //Disconnected
   socket.on( 'disconnect', function(){
     console.log( username + ' disconnected' );
-
-    io.emit('chat message', getSocketBotBundle( username + " has left the chat") );
+    removeUsername(userBundle);
+    io.emit( 'chat message', getSocketBotBundle( username + " has left the chat") );
+    io.emit( 'new user', usernames ); //Send all users
     delete clients[socket.id]; // remove the client from the array
     delete users[username]; // remove connected user & socket.id
   } );
@@ -40,12 +46,22 @@ io.on('connection', function(socket){
   socket.on('chat message', function(message){
     io.emit('chat message', getMessageBundle(userColour, username, message.message, message.time)); //Send message to everyone TODO: Don't send back to sender!
   });
-
 });
 
 http.listen(3000, function(){
   console.log('listening on *:3000');
 });
+
+function removeUsername(userBundle)
+{
+  for (var i = 0; i < usernames.length; i++) {
+    var user = usernames[i];
+    if (user == userBundle)
+    {
+      usernames.splice(i,1);
+    }
+  }
+}
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -56,6 +72,9 @@ function getRandomColor() {
     return color;
 }
 
+/**
+  * Message to send from a user
+  */
 function getMessageBundle(userColour, username, msg, timestamp)
 {
   var messageBundle = {
@@ -68,6 +87,9 @@ function getMessageBundle(userColour, username, msg, timestamp)
   return messageBundle;
 }
 
+/**
+  * Message to send from socket bot
+  */
 function getSocketBotBundle(message)
 {
   var messageBundle = getMessageBundle(
@@ -78,6 +100,20 @@ function getSocketBotBundle(message)
 
     return messageBundle;
 }
+
+/**
+  * Get username and usercolour
+  */
+function getUserBundle(username, userColour)
+{
+  var userBundle = {
+    user: username,
+    color: userColour
+  }
+
+  return userBundle;
+}
+
 
 /**
  * Return a timestamp with the format "h:MM:ss TT"
