@@ -38,7 +38,6 @@ io.on('connection', function(socket){
 
   //New message
   socket.on('chat message', function(message){
-    console.log( message.message + message.time );
     io.emit('chat message', getMessageBundle(userColour, username, message.message, message.time)); //Send message to everyone TODO: Don't send back to sender!
   });
 
@@ -96,6 +95,7 @@ function timeStamp(now) {
   time[0] = ( time[0] < 12 ) ? time[0] : time[0] - 12;
 
 // If hour is 0, set it to 12 time[0] = time[0] || 12;
+  time[0] = time[0] || 12;
 
 // If seconds and minutes are less than 10, add a zero
   for ( var i = 1; i < 3; i++ ) {
