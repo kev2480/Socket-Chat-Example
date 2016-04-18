@@ -63,7 +63,8 @@ function removeUsername(userBundle)
   }
 }
 
-function getRandomColor() {
+function getRandomColor()
+{
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
     for (var i = 0; i < 6; i++ ) {
@@ -119,7 +120,8 @@ function getUserBundle(username, userColour)
  * Return a timestamp with the format "h:MM:ss TT"
  * @type {Date}
  */
-function timeStamp(now) {
+function timeStamp(now)
+{
 
 // Create an array with the current hour, minute and second
   var time = [ now.getHours(), now.getMinutes(), now.getSeconds() ];
@@ -134,7 +136,8 @@ function timeStamp(now) {
   time[0] = time[0] || 12;
 
 // If seconds and minutes are less than 10, add a zero
-  for ( var i = 1; i < 3; i++ ) {
+  for ( var i = 1; i < 3; i++ )
+  {
     if ( time[i] < 10 ) {
       time[i] = "0" + time[i];
     }
