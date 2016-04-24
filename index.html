@@ -13,14 +13,29 @@
       <link rel="stylesheet" href="/static/css/style.css">
       <link rel="stylesheet" href="/static/css/animations.css">
 
+      <script src="/static/js/angular.min.js"></script>
+
     <style type="text/css"></style>
   </head>
-  <body>
+  <body ng-app="chat">
       <div class="container">
-        <div class="row">
-          <ul id="users" class="list-group col-md-2 list"></ul>
+        <div class="row" >
+          <ul id="users" class="list-group col-md-2 list" ng-controller="UserController as userStore">
+            <!-- Use angular.js to repeat the contents of users -->
+            <li ng-repeat="user in userStore.people" class="list-group-item">
+              <strong style="color:{{user.color}}">{{user.user}}</strong>
+            </li>
+
+          </ul>
           <div class="col-md-1"></div>
-          <ul id="messages" class="list-group col-md-9 list"></ul>
+          <ul id="messages" class="list-group col-md-9 list" ng-controller="MessageController as messageStore">
+            <!-- Use angular.js to repeat the contents of chats -->
+            <li ng-repeat="message in messageStore.chats" class="list-group-item">
+              <strong class="messageUser" style="color:{{message.color}}">{{message.user}}</strong>
+              <span class="message">{{message.message}}</span>
+              <span class="time">{{message.time}}</span>
+            </li>
+          </ul>
         </div>
       </div>
 

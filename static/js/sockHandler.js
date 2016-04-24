@@ -1,37 +1,64 @@
-
-var person = prompt("Please enter your name...", "");
-
-var socket = io({ query: "username=" + person });
-
-$('form').submit(function(){
-  var now = new Date();
-  socket.emit('chat message', getSendBundle( $('#m').val(), now ) );
-  $('#m').val('');
-  return false;
-});
-
-socket.on('chat message', function(msg){
-
-  $("#messages").append('<li class="list-group-item">'
-                          + '<strong class="messageUser" style="color:'+msg.color+'">'+msg.user+'</strong>'
-                          + '<span class="message">'+msg.message+'</span>'
-                          + '<span class="time">'+ msg.time+'</span>'
-                          + '</li>');
-
-  $( "#messages li:last-child" ).addClass("pullDown");
-  window.scrollTo(0,document.body.scrollHeight);
-});
-
-/*On new user empty and re add*/
-socket.on('new user', function(usernames)
+(function()
 {
-  $("#users").empty();
-  $("#users").append('<li class="list-group-item list-group-item-info">Online </li>');
-  for (var i = 0; i < usernames.length; i++) {
-    var user = usernames[i];
-    addUser(user);
-  }
-});
+  var person = prompt( "Please enter your name...", "" );
+
+  var socket = io( { query: "username=" + person } );
+
+  //Store users and messages for Angular
+  var usernames = [];
+  var messages  = [];
+
+  //Define Chat angular module
+  var chatAngular = angular.module( "chat", [] );
+
+  //Define Messages Controller for angular
+  chatAngular.controller('MessageController', function() {
+    this.chats = messages;
+  } );
+
+  //Define Users Controller for angular
+  chatAngular.controller('UserController', function() {
+    this.people = usernames;
+  } );
+
+  $('form').submit( function(){
+    //On submit.. get date/message and emit.
+    var now = new Date();
+    socket.emit('chat message', getSendBundle( $('#m').val(), now ) );
+    $('#m').val('');
+    return false;
+  } );
+
+  socket.on( 'chat message', function(msg){
+    //Add Element to messages
+    messages.push(msg);
+    //Alert Angular its updated (only needed if outside of controller function)
+    angular.element($("#messages")).scope().$apply();
+    //Add animation to last child
+    $( "#messages li:last-child" ).addClass( "pullDown" );
+    //Pull down to bottom of window
+    window.scrollTo(0,document.body.scrollHeight);
+
+  } );
+
+  /*On new user empty and re add*/
+  socket.on( 'new user', function(users)
+  {
+    //Empty array
+   usernames.length = 0;
+
+   //Loop and push (bit of a hack.. doesn't work by specifying usernames = users)
+   for ( var i = 0; i < users.length; i++ ) {
+     usernames.push(users[i]);
+   }
+
+   //Alert Angular its updated (only needed if outside of controller function)
+   angular.element($("#users")).scope().$apply();
+   //Add animation to last child
+   $( "#users li:last-child" ).addClass("pullDown");
+  } );
+
+} )();
 
 /**
   * Add user to online list
