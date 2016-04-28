@@ -2,8 +2,6 @@
 
 A Simple, multi-platform Chat application
 
-Created with Ruby, [Sinatra](http://www.sinatrarb.com/) (For http routing) and [Daybreak](http://propublica.github.io/daybreak/) (For simple Key/Value storage).
-
 Created with [Node.js](https://angularjs.org), [Angular.js](https://angularjs.org), [Socket.io](http://socket.io/) and [Bootstrap](http://getbootstrap.com/).
 
 Functionality:
