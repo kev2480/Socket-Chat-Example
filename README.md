@@ -22,6 +22,6 @@ Requirements: Ruby.
 
 ## Usage
 
-1. Navigate to `http://localhost:3000/` after running the application or 'http://ipAddressOfNode:3000'.
+1. Navigate to `http://localhost:3000/` after running the application or `http://ipAddressOfNode:3000`.
 2. Enter username when prompted.
 3. Enter chat messages at the chat box at the bottom of the page.
