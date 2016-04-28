@@ -1,0 +1,6 @@
+{
+  "name": "A Simple, multi-platform Chat application",
+  "tagline": "",
+  "body": "# Socket chat\r\n\r\nA Simple, multi-platform Chat application\r\n\r\nCreated with Ruby, [Sinatra](http://www.sinatrarb.com/) (For http routing) and [Daybreak](http://propublica.github.io/daybreak/) (For simple Key/Value storage).\r\n\r\nCreated with [Node.js](https://angularjs.org), [Angular.js](https://angularjs.org), [Socket.io](http://socket.io/) and [Bootstrap](http://getbootstrap.com/).\r\n\r\nFunctionality:\r\n- Live updating chat\r\n- Live updating online users\r\n- Notifications from SocketBot (server) when people connect disconnect\r\n- Username support\r\n- Cross platform. Bootstrap allows the chat application to adapt to the user's display\r\n\r\n## Installation\r\n\r\nRequirements: Ruby.\r\n\r\n1. Ensure Node.js is installed on the server.\r\n2. Run node index.js to start the application.\r\n\r\n## Usage\r\n\r\n1. Navigate to `http://localhost:3000/` after running the application or `http://ipAddressOfNode:3000`.\r\n2. Enter username when prompted.\r\n3. Enter chat messages at the chat box at the bottom of the page.\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
