@@ -15,7 +15,7 @@ Functionality:
 
 ## Installation
 
-Requirements: Ruby.
+Requirements: Node.js
 
 1. Ensure Node.js is installed on the server.
 2. Run node index.js to start the application.
