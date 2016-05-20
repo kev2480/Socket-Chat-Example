@@ -39,6 +39,7 @@
     //Pull down to bottom of window
     window.scrollTo(0,document.body.scrollHeight);
 
+    Push.create("New message from: " + msg.user);
   } );
 
   /*On new user empty and re add*/
